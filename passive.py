@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import pandas as pd
 import time
+import os
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegressionCV
@@ -62,6 +63,8 @@ trials = option('trials', type=int, default=10)
 # Example :- "rec.sport.hockey,rec.sport.baseball,sci.electronics".
 # If left unspecified, all the 20 categories are included in task.
 categories = option('categories', default=None)
+# Filename to store the err plot
+err_filename = option('err_filename', default='err.png')
 
 if categories is None:
     corpus = fetch_20newsgroups(subset='all')
@@ -103,5 +106,7 @@ for t in range(trials):
         elapsed_time = time.time() - start_time
         print t, len(idxs), err,  "%.2fs" % elapsed_time
 
-pd.DataFrame(data=test_err).boxplot()
-plt.savefig('err.png')
+task_name = os.path.splitext(err_filename)[0]
+ax = pd.DataFrame(data=test_err).boxplot()
+ax.set(xlabel='Training Set Size', ylabel='Test Error', title = task_name)
+plt.savefig('figs/'+err_filename)
