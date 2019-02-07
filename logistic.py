@@ -13,6 +13,7 @@ class LogisticRegression(BaseEstimator, LinearClassifierMixin, SparseCoefMixin):
         self.k = k
         self.coef_ = None
         self.intercept_ = None
+        self.funcalls_lastfit = None
 
     def fit(self, X, y):
         if self.k:
@@ -40,6 +41,7 @@ class LogisticRegression(BaseEstimator, LinearClassifierMixin, SparseCoefMixin):
                                                         args = (X_, yi),
                                                         fprime = self.fprime,
                                                         pgtol = self.tol)
+            self.funcalls_lastfit = optimLogitLBFGS[2]['funcalls']
             beta = optimLogitLBFGS[0]
             self.intercept_[idx] = beta[0]
             self.coef_[idx] = beta[1:]
