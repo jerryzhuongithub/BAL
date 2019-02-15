@@ -1,24 +1,56 @@
-#### Active vs Passive Learning 
-‘active_vs_passive.py’ performs text classification on **20 Newsgroups** Dataset using **Logistic Regression** and plots error curves for Active Learning and Passive Learning.  
+# Beyond Active Learning 
+## Introduction
+This python module compares performance of passive learning and active learning. It performs text classification on **20 Newsgroups** dataset using Logistic Regression and plots error curves for varying training set sizes.
 
-‘regulariser’ parameter for Logistic Regression can be passed as an argument. (default = 0.1)
+Few key components for running the experiments :
+*   Main experimental script is in [‘run_experiments.py’]('run_experiments.py') with many options.
+*   Core implementation - model training, testing and error plots - is implemented in ['main.py']('main.py').
 
-Classifier Training is divided into two phases. Until the stopping condition is met, training continues in phase 1.
+Available Sampling methods for Active Learning:
+*   Margin based uncertainty sampling
+*   Maximum entropy based uncertainty sampling
 
-Phase 1 options (default = ‘fixed’) :-
-* fixed’: Stopping condition is met when the training set size is equal to a fixed size. The fixed size(default=1) can be passed as an argument to the code.
-* ‘klogk’ : Stopping condition is met when the training set size is equal to klogk, where k corresponds to the total number of classes in dataset.
+Training phase is divided into two parts. Until the stopping condition is met, training continues in phase 1. The model is trained for varying training set sizes and the error on the test set is calculated for each of them, and this is repeated for multiple trials. The code plots minimum, maximum and median of test error on each training set size over multiple trials. 
+
+
+## Running experiments
+
+The following are the arguments for [‘run_experiments.py’]('run_experiments.py')
+
+ Options |  Usage and Default Value        
+---------| -------------------------
+--regulariser  | Regularisation parameter for Logistic Regression. (default = 0.1)
+--phase1 | 'Fixed', 'klogk', 'until-all-labels' or 'm-per-class' can be selected for phase 1. (default = 'fixed')
+--m-per-class | Number of training items 'm' required from each class. This **should be** passed as an argument if 'm-per-class' selected for phase1
+--fixed | Fixed size of training items if 'fixed' selected for phase1. (default = 1)
+--phase2 | ‘Margin’, 'entropy' or 'passive' can be selected for phase 2. (default = 'passive')
+--phase1-increment | Growth rate of training set size for phase 1. (default = 1)
+--phase2-increment | Growth rate of training set size for phase 2. (default = 1)
+--trials | Number of trials of training. (default = 20)
+
+Available choices for argument '--phase1'/'--phase2'
+* 'fixed' : Stopping condition is met when the training set size is equal to a fixed size
+* 'klogk' :" Stopping condition is met when the training set size is equal to klogk, where k corresponds to the total number of classes in dataset.
 * 'until-all-labels' : Stopping condition is met when the training set has at least one training item from each class.
-* ‘m-per-class’ :  The training set has at least ‘m’ training items from each class, before proceeding to phase 2. ‘m-per-class’ **should be** passed as an argument.
+* 'm-per-class' : The training set has at least ‘m’ training items from each class, before proceeding to phase 2. 
+* ‘margin’ : Smallest margin based uncertainty sampling
+* ‘entropy’ : Maximum entropy based uncertainty sampling
+* ‘passive’ : Passive learning (uniform sampling)
 
-Phase 2 sampling methods:-
-* ‘margin’ : Smallest Margin based Active Learning
-* ‘entropy’ : Maximum Entropy based Active Learning 
-* ‘passive’ : Passive Learning
+To run the experiment with default configuration, run :
 
-‘phase1-increment’ and ‘phase2-increment’ : The growth rate of training set size for phase 1 and phase 2 can be passed as an argument. (default=1 for both)
+```
+$ python run_experiments.py
+```
 
-The model is trained for varying training set size and the error on the test set is calculated for each of them, and this is repeated for multiple trials(Number of trials can be passed as argument. default=20). The code plots minimum, maximum and median of test error on each training set size over multiple trials. 
+## Results
+Error plots can be found in 'figs/' folder.
+To reproduce the results, run :
+```
+$ ./run_experiments.sh
+```
 
-To run the code with the default configuration, run ‘python active_vs_passive.py’.
+
+
+
 
