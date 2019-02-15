@@ -3,8 +3,8 @@
 This python module compares performance of passive learning and active learning. It performs text classification on **20 Newsgroups** dataset using Logistic Regression and plots error curves for varying training set sizes.
 
 Few key components for running the experiments :
-*   Main experimental script is in [‘run_experiments.py’]('run_experiments.py') with many options.
-*   Core implementation - model training, testing and error plots - is implemented in ['main.py']('main.py').
+*   Main experimental script is in [`run_experiments.py`](run_experiments.py) with many options.
+*   Core implementation - model training, testing and error plots - is implemented in [`main.py`](main.py).
 
 Available Sampling methods for Active Learning:
 *   Margin based uncertainty sampling
@@ -15,7 +15,7 @@ Training phase is divided into two parts. Until the stopping condition is met, t
 
 ## Running experiments
 
-The following are the arguments for [‘run_experiments.py’]('run_experiments.py')
+The following are the arguments for [`run_experiments.py`](run_experiments.py)
 
  Options |  Usage and Default Value        
 ---------| -------------------------
