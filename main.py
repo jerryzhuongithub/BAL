@@ -40,7 +40,6 @@ class options(object):
     # Sampling strategy in phase 2 can be passive, maximum entropy or smallest margin
     phase2 = option('phase2', choices=['passive', 'margin', 'entropy'], default='passive')
     # Number of items to be selected in phase 1 if we want to have a fixed number of items.
-    option.phase1 = 'fixed'
     fixed = option('fixed', type=int, default=1)
     # Number of items m from each of the k classes.
     m_per_class = option('m-per-class', type=int, default=1)
