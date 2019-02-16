@@ -1,17 +1,26 @@
 # Beyond Active Learning 
 ## Introduction
-This python module compares performance of passive learning and active learning. It performs text classification on **20 Newsgroups** dataset using Logistic Regression and plots error curves for varying training set sizes.
 
-Few key components for running the experiments :
-*   Main experimental script is in [`run_experiments.py`](run_experiments.py) with many options.
-*   Core implementation - model training, testing and error plots - is implemented in [`main.py`](main.py).
+*Beyond Active Learning* is a Python library which implements various active learning algorithms. Sample experiments perform text classification on the **20 Newsgroups** dataset using a logistic regression learner over a binary bag of words feature representation, plotting error curves over varying training set sizes, and benchmarking them against passive learning.
 
-Available Sampling methods for Active Learning:
+The core functions - model training, testing and error plots - are implemented in [`main.py`](main.py).
+
+To see an example of programmatic usage and to recreate the results in the
+[`figs`](figs) folder, run the experimental script is
+[`run_experiments.py`](run_experiments.py).
+
+Options are set on a global `options` and may be set either programmatically or by command-line flags.
+
+*Beyond Active Learning* implements the following active learning algorithms:
+
 *   Margin based uncertainty sampling
 *   Maximum entropy based uncertainty sampling
 
-Training phase is divided into two parts. Until the stopping condition is met, training continues in phase 1. The model is trained for varying training set sizes and the error on the test set is calculated for each of them, and this is repeated for multiple trials. The code plots minimum, maximum and median of test error on each training set size over multiple trials. 
+The programmatic entry point is that `training` method defined in [`main.py`](main.py). The method performs implements an active learner by sampling without replacement over a provided training set `x_train`, a NumPy input matrix, and `y_train`, a NumPy vector of labels. Evaluation is performed on the data set specified by the arguments `x_test, ` and `y_test`.
 
+The active learner is specified by selecting its protocol during an initialization step and then its definition of uncertainty used during its active learning step. In the options, these are known, respectively, as `phase1` and `phase2`.
+
+This learning procedure is repeated for the number of trials given in `options.trials` (or the `--trials` command-line flag). The `training` method returns a tuple of `(test_errors, stopped_at)`, whose first item is a matrix of test set errors at each iteration over the trials and second item is a list of the iteration at which the initialization step ends.
 
 ## Running experiments
 
@@ -29,11 +38,13 @@ The following options are defined in [`main.py`](main.py)
 --phase2-increment | Growth rate of training set size for phase 2. (default = 1)
 --trials | Number of trials of training. (default = 20)
 
-Available choices for argument '--phase1'/'--phase2'
-* 'fixed' : Stopping condition is met when the training set size is equal to a fixed size
-* 'klogk' :" Stopping condition is met when the training set size is equal to klogk, where k corresponds to the total number of classes in dataset.
-* 'until-all-labels' : Stopping condition is met when the training set has at least one training item from each class.
-* 'm-per-class' : The training set has at least ‘m’ training items from each class, before proceeding to phase 2. 
+Available choices for argument `--phase1`
+* 'fixed' : Initialize by sampling without replacement up to a fixed size (set by `fixed` parameter)
+* 'klogk' :" Initialize by sampling without replacement k log k items where k corresponds to the number of classes in dataset.
+* 'until-all-labels' : Initialize by sampling without replacement until the training set contains at least one training item from each class.
+* 'm-per-class' : Initialize by sampling without replacement `m-per-class` training items from each class. 
+
+Available choices for argument `--phase2`
 * ‘margin’ : Smallest margin based uncertainty sampling
 * ‘entropy’ : Maximum entropy based uncertainty sampling
 * ‘passive’ : Passive learning (uniform sampling)
