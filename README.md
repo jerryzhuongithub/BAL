@@ -15,7 +15,7 @@ Training phase is divided into two parts. Until the stopping condition is met, t
 
 ## Running experiments
 
-The following are the arguments for [`run_experiments.py`](run_experiments.py)
+The following are the options that can be set in [`run_experiments.py`](run_experiments.py)
 
  Options |  Usage and Default Value        
 ---------| -------------------------
@@ -24,8 +24,8 @@ The following are the arguments for [`run_experiments.py`](run_experiments.py)
 --m-per-class | Number of training items 'm' required from each class. This **should be** passed as an argument if 'm-per-class' selected for phase1
 --fixed | Fixed size of training items if 'fixed' selected for phase1. (default = 1)
 --phase2 | ‘Margin’, 'entropy' or 'passive' can be selected for phase 2. (default = 'passive')
---phase1-increment | Growth rate of training set size for phase 1. (default = 1)
---phase2-increment | Growth rate of training set size for phase 2. (default = 1)
+--phase1-increment | Growth rate of training set size for phase 1. (default = 10)
+--phase2-increment | Growth rate of training set size for phase 2. (default = 10)
 --trials | Number of trials of training. (default = 20)
 
 Available choices for argument '--phase1'/'--phase2'
@@ -44,8 +44,7 @@ $ python run_experiments.py
 ```
 
 ## Results
-Error plots can be found in 'figs/' folder.
-To reproduce the results, run :
+Error plots can be found in 'figs/' folder. To reproduce the results, run :
 ```
 $ ./run_experiments.sh
 ```
