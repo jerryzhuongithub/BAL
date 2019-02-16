@@ -36,7 +36,7 @@ class options(object):
     # Number of training items to be selected can be a fixed value, klogk (where k is the number of classes),
     # until we have at least one training item corresponding to each of the k labels, or until we have m
     # items from each k labels.
-    phase1 = option('phase1', choices=['klogk','fixed','until-all-labels','m-per-class'], default='until-all-labels')
+    phase1 = option('phase1', choices=['klogk','fixed','until-all-labels','m-per-class'], default='fixed')
     # Sampling strategy in phase 2 can be passive, maximum entropy or smallest margin
     phase2 = option('phase2', choices=['passive', 'margin', 'entropy'], default='passive')
     # Number of items to be selected in phase 1 if we want to have a fixed number of items.
@@ -189,7 +189,8 @@ def get_stopping_condition(y_train):
         return UntilAllLabelsStopping(y_train)
 
 
-def training(k, x_train, y_train, x_test, y_test):
+def training(x_train, y_train, x_test, y_test):
+    k = len(np.unique(y_train))
     test_err = {}
     stopped_phase1_at = []
     for t in range(options.trials):
