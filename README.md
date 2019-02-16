@@ -20,7 +20,7 @@ The following are the options that can be set in [`run_experiments.py`](run_expe
  Options |  Usage and Default Value        
 ---------| -------------------------
 --regulariser  | Regularisation parameter for Logistic Regression. (default = 0.1)
---phase1 | 'Fixed', 'klogk', 'until-all-labels' or 'm-per-class' can be selected for phase 1. (default = 'fixed')
+--phase1 | 'Fixed', 'klogk', 'until-all-labels' or 'm-per-class' can be selected for phase 1. (default = 'until-all-labels')
 --m-per-class | Number of training items 'm' required from each class. This **should be** passed as an argument if 'm-per-class' selected for phase1
 --fixed | Fixed size of training items if 'fixed' selected for phase1. (default = 1)
 --phase2 | ‘Margin’, 'entropy' or 'passive' can be selected for phase 2. (default = 'passive')

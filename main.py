@@ -36,13 +36,13 @@ class options(object):
     # Number of training items to be selected can be a fixed value, klogk (where k is the number of classes),
     # until we have at least one training item corresponding to each of the k labels, or until we have m
     # items from each k labels.
-    phase1 = option('phase1', choices=['klogk','fixed','until-all-labels','m-per-class'], default = 'fixed')
+    phase1 = option('phase1', choices=['klogk','fixed','until-all-labels','m-per-class'], default='until-all-labels')
     # Sampling strategy in phase 2 can be passive, maximum entropy or smallest margin
     phase2 = option('phase2', choices=['passive', 'margin', 'entropy'], default='passive')
     # Number of items to be selected in phase 1 if we want to have a fixed number of items.
     fixed = option('fixed', type=int, default=1)
     # Number of items m from each of the k classes.
-    m_per_class = option('m-per-class', type=int, default=None)
+    m_per_class = option('m-per-class', type=int, default=1)
     show_progress = True
 
 
