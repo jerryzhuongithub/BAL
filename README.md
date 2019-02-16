@@ -15,17 +15,18 @@ Training phase is divided into two parts. Until the stopping condition is met, t
 
 ## Running experiments
 
-The following are the options that can be set in [`run_experiments.py`](run_experiments.py)
+The following options are defined in [`main.py`](main.py)
+
 
  Options |  Usage and Default Value        
 ---------| -------------------------
 --regulariser  | Regularisation parameter for Logistic Regression. (default = 0.1)
 --phase1 | 'Fixed', 'klogk', 'until-all-labels' or 'm-per-class' can be selected for phase 1. (default = 'until-all-labels')
---m-per-class | Number of training items 'm' required from each class. This **should be** passed as an argument if 'm-per-class' selected for phase1
+--m-per-class | Number of training items 'm' required from each class. (default=1)
 --fixed | Fixed size of training items if 'fixed' selected for phase1. (default = 1)
 --phase2 | ‘Margin’, 'entropy' or 'passive' can be selected for phase 2. (default = 'passive')
---phase1-increment | Growth rate of training set size for phase 1. (default = 10)
---phase2-increment | Growth rate of training set size for phase 2. (default = 10)
+--phase1-increment | Growth rate of training set size for phase 1. (default = 1)
+--phase2-increment | Growth rate of training set size for phase 2. (default = 1)
 --trials | Number of trials of training. (default = 20)
 
 Available choices for argument '--phase1'/'--phase2'
@@ -37,11 +38,16 @@ Available choices for argument '--phase1'/'--phase2'
 * ‘entropy’ : Maximum entropy based uncertainty sampling
 * ‘passive’ : Passive learning (uniform sampling)
 
-To run the experiment with default configuration, run :
+The options can be modified in [`run_experiments.py`](run_experiments.py) as needed.
+
+To run the experiment, run:
 
 ```
 $ python run_experiments.py
 ```
+
+**Note : 'm-per-class' is not yet implemented**
+
 
 ## Results
 Error plots can be found in 'figs/' folder. To reproduce the results, run :

@@ -40,6 +40,7 @@ class options(object):
     # Sampling strategy in phase 2 can be passive, maximum entropy or smallest margin
     phase2 = option('phase2', choices=['passive', 'margin', 'entropy'], default='passive')
     # Number of items to be selected in phase 1 if we want to have a fixed number of items.
+    option.phase1 = 'fixed'
     fixed = option('fixed', type=int, default=1)
     # Number of items m from each of the k classes.
     m_per_class = option('m-per-class', type=int, default=1)
@@ -58,10 +59,13 @@ class UntilAllLabelsStopping():
 
 
 class FixedStopping():
+    def __init__(self, fixed):
+        self.fixed = fixed
+
     def met(self, idxs):
         if options.fixed is None:
             raise Exception("Requires option --fixed [n]")
-        return len(idxs) >= options.fixed
+        return len(idxs) >= self.fixed
 
 
 class KLogKStopping():
@@ -176,7 +180,7 @@ def get_phase2(idxs, x_train):
 
 def get_stopping_condition(y_train):
     if options.phase1 == 'fixed':
-        return FixedStopping()
+        return FixedStopping(options.fixed)
     elif options.phase1 == 'klogk':
         return KLogKStopping()
     elif options.phase1 == 'm-per-class':

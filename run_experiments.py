@@ -22,6 +22,7 @@ def train_20newsgroups_all():
     options.phase2 = 'entropy'
     test_err, stopped_phase1_at = training(20, x_train, y_train, x_test, y_test)
     plot_minmedianmax(test_err, stopped_phase1_at, folder='figs/active', title='20newsgroups-entropy', filename='20newsgroups-entropy.png', save=True)
+    options.phase1 = 'fixed'
     options.phase2 = 'passive'
     test_err, stopped_phase1_at = training(20, x_train, y_train, x_test, y_test)
     plot_minmedianmax(test_err, stopped_phase1_at, folder='figs/passive', title='20newsgroups-passive', filename='20newsgroups-passive.png', save=True)
