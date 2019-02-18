@@ -224,9 +224,9 @@ def training(x_train, y_train, x_test, y_test):
     return test_err, stopped_phase1_at
 
 
-def plot_minmedianmax(test_err, stopped_phase1_at, title=None, folder=None, filename=None, save=False):
+def plot_minmedianmax(test_err, stopped_phase1_at, legend_name=None, title=None, folder=None, filename=None, save=False):
     test_err = pd.DataFrame.from_dict(test_err)
-    df = pd.DataFrame({'active': test_err.median()})
+    df = pd.DataFrame({legend_name: test_err.median()})
     ax = df.plot(title=title or folder)
     stopped_at = [np.median(stopped_phase1_at)]
     ax.fill_between(df.index, test_err.min(), test_err.max(), facecolor='C0', alpha=0.5)
