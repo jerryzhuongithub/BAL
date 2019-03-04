@@ -47,7 +47,7 @@ class options(object):
 
 
 class UntilAllLabelsStopping():
-    # TODO Generalize to m examples per class
+    # TODO Generalize to m examples per class, use same m-per-class flag
     def __init__(self, y):
         self.y = y
         self.k = len(np.unique(y))
@@ -76,26 +76,25 @@ class KLogKStopping():
         return len(idxs) >= self.j
 
 
-class TrivialStopping():
-    def met(self, idxs):
-        return True
-
-
 class PerClass:
-    def __init__(self, idxs, x_train, y_train, m_per_class):
-        self.schedule = np.arange(np.shape(x_train)[0])
-        self.schedule = np.setdiff1d(self.schedule, idxs)
+    def __init__(self, x_train, y_train, m_per_class, increment):
         self.classes = np.unique(y_train)
         self.y_train = y_train
         self.m_per_class = m_per_class
+        self.increment = increment
+        self.called = False
 
     def sample(self, clf):
-        idxs = []
-        for k in self.classes:
-            yk = np.where(self.y_train[self.schedule] == k)[0]
-            np.random.shuffle(yk)
-            idxs += yk[:self.m_per_class].tolist()
-        self.schedule = np.setdiff1d(self.schedule, idxs)
+        if not self.called:
+            idxs = []
+            for k in self.classes:
+                yk = np.where(self.y_train == k)[0]
+                np.random.shuffle(yk)
+                idxs += yk[:self.m_per_class].tolist()
+            self.buffer = idxs
+            self.called = True
+        idxs = self.buffer[:self.increment]
+        self.buffer = self.buffer[self.increment:]
         return idxs
 
 
@@ -161,7 +160,7 @@ def get_phase1(idxs, x_train, y_train):
     elif options.phase1 == 'until-all-labels':
         return Passive(idxs, x_train, options.phase1_increment)
     elif options.phase1 == 'm-per-class':
-        return PerClass(idxs, x_train, y_train, options.m_per_class)
+        return PerClass(x_train, y_train, options.m_per_class, options.phase1_increment)
     else:
         raise Exception("%s not recognized " % options.phase1)
 
@@ -183,7 +182,7 @@ def get_stopping_condition(y_train):
     elif options.phase1 == 'klogk':
         return KLogKStopping()
     elif options.phase1 == 'm-per-class':
-        return TrivialStopping()
+        return FixedStopping(len(np.unique(y_train)) * options.m_per_class)
     elif options.phase1 == 'until-all-labels':
         return UntilAllLabelsStopping(y_train)
 
