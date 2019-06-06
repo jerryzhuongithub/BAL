@@ -7,7 +7,7 @@ from sklearn.linear_model.base import LinearClassifierMixin, SparseCoefMixin, Ba
 
 
 class LogisticRegression(BaseEstimator, LinearClassifierMixin, SparseCoefMixin):
-    def __init__(self, C=1.0, tol=1e-4, k=None):
+    def __init__(self, C=1e4, tol=1e-4, k=None):
         self.C = C
         self.tol = tol
         self.k = k
