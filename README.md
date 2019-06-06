@@ -145,6 +145,6 @@ The following command-line parameters are common to all methods:
 Parameter                | Default | Description
 -------------------------| --------| -----------------
 ---trials                | 20      | Number of trials to run
----regularier            | 1e4     | Value of logistic regression regularizer (equivalent to `C` argument in `scikit-learn` for linear learners)
+---regularizer           | 1e4     | Value of logistic regression regularizer (equivalent to `C` argument in `scikit-learn` for linear learners)
 ---batch                 | 1       | Number of items to add to training set at each iteration
 ---training-set-max-size | None    | Training set size to reach before concluding trial. Default concludes when entire training set is used.
